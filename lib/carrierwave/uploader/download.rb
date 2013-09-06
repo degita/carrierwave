@@ -36,7 +36,7 @@ module CarrierWave
 
         def file
           if @file.blank?
-            @file = Kernel.open(@uri.to_s)
+            @file = Kernel.open(@uri.to_s, "User-Agent" => "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; .NET CLR 3.0.04506.648)")
             @file = @file.is_a?(String) ? StringIO.new(@file) : @file
           end
           @file
@@ -58,10 +58,12 @@ module CarrierWave
       # [url (String)] The URL where the remote file is stored
       #
       def download!(uri)
-        processed_uri = process_uri(uri)
-        file = RemoteFile.new(processed_uri)
-        raise CarrierWave::DownloadError, "trying to download a file which is not served over HTTP" unless file.http?
-        cache!(file)
+        unless uri.blank?
+          processed_uri = process_uri(uri)
+          file = RemoteFile.new(processed_uri)
+          raise CarrierWave::DownloadError, "trying to download a file which is not served over HTTP" unless file.http?
+          cache!(file)
+        end
       end
 
       ##
@@ -84,3 +86,4 @@ module CarrierWave
     end # Download
   end # Uploader
 end # CarrierWave
+

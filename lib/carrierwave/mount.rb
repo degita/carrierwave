@@ -20,11 +20,15 @@ module CarrierWave
     # [Hash{Symbol => CarrierWave}] what uploaders are mounted on which columns
     #
     def uploaders
-      @uploaders ||= superclass.respond_to?(:uploaders) ? superclass.uploaders.dup : {}
+      @uploaders ||= {}
+      @uploaders = superclass.uploaders.merge(@uploaders) if superclass.respond_to?(:uploaders)
+      @uploaders
     end
 
     def uploader_options
-      @uploader_options ||= superclass.respond_to?(:uploader_options) ? superclass.uploader_options.dup : {}
+      @uploader_options ||= {}
+      @uploader_options = superclass.uploader_options.merge(@uploader_options) if superclass.respond_to?(:uploader_options)
+      @uploader_options
     end
 
     ##
@@ -341,14 +345,12 @@ module CarrierWave
       end
 
       def remote_url=(url)
-        unless url.blank?
-          @download_error = nil
-          @integrity_error = nil
+        @download_error = nil
+        @integrity_error = nil
 
-          @remote_url = url
+        @remote_url = url
 
-          uploader.download!(url)
-        end
+        uploader.download!(url)
 
       rescue CarrierWave::DownloadError => e
         @download_error = e

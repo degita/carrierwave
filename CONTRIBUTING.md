@@ -7,11 +7,12 @@ First, make sure you have `imagemagick` and `ghostscript` installed.
 
 Then, you'll need to install bundler and the gem dependencies:
 
-  `gem install bundler && bundle install`
+  gem install bundler
+  bundle install
 
 You should now be able to run the local tests:
 
-  `bundle exec rake`
+  bundle exec rake
 
 You can also run the remote specs by creating a ~/.fog file:
 

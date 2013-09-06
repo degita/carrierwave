@@ -3,7 +3,7 @@
 This gem provides a simple and extremely flexible way to upload files from Ruby applications.
 It works well with Rack based web applications, such as Ruby on Rails.
 
-[![Build Status](https://travis-ci.org/carrierwaveuploader/carrierwave.png?branch=master)](http://travis-ci.org/carrierwaveuploader/carrierwave)
+[![Build Status](https://secure.travis-ci.org/carrierwaveuploader/carrierwave.png)](http://travis-ci.org/carrierwaveuploader/carrierwave)
 [![Code Climate](https://codeclimate.com/github/carrierwaveuploader/carrierwave.png)](https://codeclimate.com/github/carrierwaveuploader/carrierwave)
 
 ## Information
@@ -206,17 +206,8 @@ end
 
 ## Adding versions
 
-Often you'll want to add different versions of the same file. The classic example is image thumbnails. There is built in support for this*:
-
-*Note: You must have Imagemagick and MiniMagick installed to do image resizing. MiniMagick is a Ruby interface for Imagemagick which is a C program. This is why MiniMagick fails on 'bundle install' without Imagemagick installed.
-
-Some documentation refers to RMagick instead of MiniMagick but MiniMagick is recommended.
-
-To install Imagemagick on OSX with homebrew type the following:
-
-```
-$ brew install imagemagick
-```
+Often you'll want to add different versions of the same file. The classic
+example is image thumbnails. There is built in support for this:
 
 ```ruby
 class MyUploader < CarrierWave::Uploader::Base
@@ -483,9 +474,6 @@ if Rails.env.test? or Rails.env.cucumber?
 end
 ```
 
-Remember, if you have already set `storage :something` in your uploader, the `storage`
-setting from this initializer will be ignored.
-
 If you need to test your processing, you should test it in isolation, and enable
 processing only for those tests that need it.
 
@@ -576,7 +564,7 @@ That's it! You can still use the `CarrierWave::Uploader#url` method to return th
 [Fog](http://github.com/fog/fog) is used to support Rackspace Cloud Files. Ensure you have it in your Gemfile:
 
 ```ruby
-gem "fog"
+gem "fog", "~> 1.10.1"
 ```
 
 You'll need to configure a directory (also known as a container), username and API key in the initializer.
@@ -635,7 +623,7 @@ the url to the file on Rackspace Cloud Files.
 [Fog](http://github.com/fog/fog) is used to support Google Storage for Developers. Ensure you have it in your Gemfile:
 
 ```ruby
-gem "fog"
+gem "fog", "~> 1.3.1"
 ```
 
 You'll need to configure a directory (also known as a bucket), access key id and secret access key in the initializer.
@@ -708,7 +696,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   process :convert => 'png'
 
   def filename
-    super.chomp(File.extname(super)) + '.png' if original_filename.present?
+    super.chomp(File.extname(super)) + '.png'
   end
 end
 ```
@@ -775,8 +763,6 @@ errors:
     carrierwave_processing_error: "Cannot resize image."
     carrierwave_integrity_error: "Not an image."
     carrierwave_download_error: "Couldn't download image."
-    extension_white_list_error: "You are not allowed to upload %{extension} files, allowed types: %{allowed_types}"
-    extension_black_list_error: "You are not allowed to upload %{extension} files, prohibited types: %{prohibited_types}"
 ```
 
 ## Large files
